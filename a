@@ -1,0 +1,340 @@
+zenith@Zenith-AI:~$ openssl ecparam -name secp521r1 -genkey -noout -out fm-provider-private-key.pem
+zenith@Zenith-AI:~$ openssl ec -in fm-provider-private-key.pem -pubout -out fm-provider-public-key.pem
+read EC key
+writing EC key
+zenith@Zenith-AI:~$ cd airsdk
+zenith@Zenith-AI:~/airsdk$ ./build/dragon_buildext_mission/manage_keys.py --add-key fm-provider-public-key.pem --drone-address 192.168.42.1
+INFO:root:Retrieving drone serial number
+INFO:root:-> PI040452AA2E002349
+INFO:root:Creating temporary APC user and authentication token
+INFO:root:Generating challenge
+INFO:root:Sending challenge to drone
+INFO:root:Completing operation with drone response
+INFO:root:Writing drone SENC/SMAC in '/tmp/tmpouupme5o'
+INFO:root:Adding key 'fm-provider-public-key.pem' to the drone
+Connection to remote secure element established.
+Failed to open fm-provider-public-key.pem: No such file or directory
+Failed to put public key from fm-provider-public-key.pem: No such file or directory
+Command 1 failed.
+VaultIC session failed: No such file or directory
+ERROR:root:Exception occured: Command '['passe-muraille', '-H', '192.168.42.1', '-p', '80', '-k', '/tmp/tmpouupme5o', 'fm', 'add', 'file', 'fm-provider-public-key.pem']' returned non-zero exit status 1.
+zenith@Zenith-AI:~/airsdk$ ./build/dragon_buildext_mission/manage_keys.py --add-key fm-provider-public-key.pem --drone-address 192.168.42.1
+INFO:root:Retrieving drone serial number
+INFO:root:-> PI040452AA2E002349
+INFO:root:Creating temporary APC user and authentication token
+INFO:root:Generating challenge
+INFO:root:Sending challenge to drone
+INFO:root:Completing operation with drone response
+INFO:root:Writing drone SENC/SMAC in '/tmp/tmpi94t2ils'
+INFO:root:Adding key 'fm-provider-public-key.pem' to the drone
+Connection to remote secure element established.
+Failed to open fm-provider-public-key.pem: No such file or directory
+Failed to put public key from fm-provider-public-key.pem: No such file or directory
+Command 1 failed.
+VaultIC session failed: No such file or directory
+ERROR:root:Exception occured: Command '['passe-muraille', '-H', '192.168.42.1', '-p', '80', '-k', '/tmp/tmpi94t2ils', 'fm', 'add', 'file', 'fm-provider-public-key.pem']' returned non-zero exit status 1.
+zenith@Zenith-AI:~/airsdk$ cd
+zenith@Zenith-AI:~$ cp fm-provider-private-key.pem products/hello/classic/key.pem
+cp: cannot create regular file 'products/hello/classic/key.pem': No such file or directory
+zenith@Zenith-AI:~$ mkdir airsdk
+mkdir: cannot create directory ‘airsdk’: File exists
+zenith@Zenith-AI:~$ cd airsdk
+zenith@Zenith-AI:~/airsdk$ repo init -u "ssh://git@github.com/Parrot-Developers/airsdk-samples-manifest" -b master
+
+... A new version of repo (2.29) is available.
+... You should upgrade soon:
+    cp /home/zenith/airsdk/.repo/repo/repo /home/zenith/bin/repo
+
+repo: reusing existing repo client checkout in /home/zenith/airsdk
+
+repo has been initialized in /home/zenith/airsdk
+zenith@Zenith-AI:~/airsdk$ repo sync
+
+... A new version of repo (2.29) is available.
+... You should upgrade soon:
+    cp /home/zenith/airsdk/.repo/repo/repo /home/zenith/bin/repo
+
+Fetching: 100% (6/6), done in 8.915s
+.repo/repo: project not found in manifest.
+NOT Garbage collecting:   0% (0/6), done in 0.009s
+repo sync has finished successfully.
+zenith@Zenith-AI:~/airsdk$ ./build.sh -p classic -t download-base-sdk
+[I] Starting task 'download-base-sdk'
+[I] Downloading file: https://firmware.parrot.com/Versions/anafi2/classic_airsdk/%23latest/sdk.tar.gz
+[I] In '/home/zenith/airsdk': curl --progress-bar https://firmware.parrot.com/Versions/anafi2/classic_airsdk/%23latest/sdk.tar.gz --output /home/zenith/airsdk/sdk.tar.gz
+######################################################################### 100.0%
+[I] Extracting sdk.tar.gz into /home/zenith/airsdk/sdk/classic
+[I] In '/home/zenith/airsdk': tar -xf /home/zenith/airsdk/sdk.tar.gz -C /home/zenith/airsdk/sdk/classic --strip 1
+[I] Finished task 'download-base-sdk'
+zenith@Zenith-AI:~/airsdk$ ./build.sh -p pc -t download-base-sdk
+[I] Starting task 'download-base-sdk'
+[I] Downloading file: https://firmware.parrot.com/Versions/anafi2/pc_airsdk/%23latest/sdk.tar.gz
+[I] In '/home/zenith/airsdk': curl --progress-bar https://firmware.parrot.com/Versions/anafi2/pc_airsdk/%23latest/sdk.tar.gz --output /home/zenith/airsdk/sdk.tar.gz
+######################################################################### 100.0%
+[I] Extracting sdk.tar.gz into /home/zenith/airsdk/sdk/pc
+[I] In '/home/zenith/airsdk': tar -xf /home/zenith/airsdk/sdk.tar.gz -C /home/zenith/airsdk/sdk/pc --strip 1
+[I] Finished task 'download-base-sdk'
+zenith@Zenith-AI:~/airsdk$ cd product
+bash: cd: product: No such file or directory
+zenith@Zenith-AI:~/airsdk$ cd products
+zenith@Zenith-AI:~/airsdk/products$ ln -s ../packages/hello/product hello
+zenith@Zenith-AI:~/airsdk/products$ cd ..
+zenith@Zenith-AI:~/airsdk$ ./build.sh -p mymission-classic -t menuconfig
+[E] 'mymission' is not a valid product
+zenith@Zenith-AI:~/airsdk$ ./build.sh -p hello-classic -t menuconfig
+[I] Starting task 'menuconfig'
+[I] Starting task 'alchemy' with args: menuconfig
+[I] In '/home/zenith/airsdk': ALCHEMY_TARGET_CONFIG_DIR="/home/zenith/airsdk/products/hello/classic/config" ALCHEMY_TARGET_OUT="/home/zenith/airsdk/out/hello-classic" ALCHEMY_TARGET_PRODUCT="hello" ALCHEMY_TARGET_PRODUCT_VARIANT="classic" ALCHEMY_TARGET_SCAN_ADD_DIRS=" /home/zenith/airsdk/packages" ALCHEMY_TARGET_SCAN_PRUNE_DIRS=" /home/zenith/airsdk" ALCHEMY_USE_COLORS="1" ALCHEMY_WORKSPACE_DIR="/home/zenith/airsdk" PARROT_BUILD_PROP_GROUP="drones" PARROT_BUILD_PROP_PRODUCT="hello" PARROT_BUILD_PROP_PROJECT="airsdk-missions" PARROT_BUILD_PROP_UID="hello-classic-20221125-1125-0.0.0" PARROT_BUILD_PROP_VARIANT="classic" PARROT_BUILD_PROP_VERSION="0.0.0" /home/zenith/airsdk/build/alchemy/scripts/alchemake -j 1 menuconfig
+Copying /home/zenith/airsdk/sdk/classic/host/ to /home/zenith/airsdk/out/hello-classic/staging-host
+----------------------------------------------------------------------
++ ALCHEMY_WORKSPACE_DIR = /home/zenith/airsdk
++ TARGET_PRODUCT = hello
++ TARGET_PRODUCT_VARIANT = classic
++ TARGET_OS = linux
++ TARGET_OS_FLAVOUR = parrot
++ TARGET_LIBC = eglibc
++ TARGET_ARCH = aarch64
++ TARGET_CPU = hi3559
++ TARGET_OUT = /home/zenith/airsdk/out/hello-classic
++ TARGET_CONFIG_DIR = /home/zenith/airsdk/products/hello/classic/config
++ TARGET_CC_PATH = /opt/hisi-linux/x86-arm/aarch64-himix100-linux/bin/aarch64-himix100-linux-gcc
++ TARGET_CC_VERSION = 6.3.0
+----------------------------------------------------------------------
+Scanning /home/zenith/airsdk/packages for makefiles...
+Found 4 makefiles
+Found 65 modules
+Computing modules dependencies...
+Generating rules...
+Processing rules...
+/home/zenith/airsdk/build/alchemy/scripts/../kconfig/bin-linux-x64/mconf: error while loading shared libraries: libncurses.so.5: cannot open shared object file: No such file or directory
+[E] /home/zenith/airsdk/build/alchemy/scripts/../kconfig/bin-linux-x64/mconf /tmp/tmpd0ajlxkm.alchemy failed with status 127
+[I] Finished task 'alchemy'
+[I] Finished task 'menuconfig'
+zenith@Zenith-AI:~/airsdk$ ./build.sh -p mymission-classic -t all -j
+[E] 'mymission' is not a valid product
+zenith@Zenith-AI:~/airsdk$ ./build.sh -p hello-classic -t all -j
+[I] Starting task 'all'
+[I] Starting task 'build'
+[I] Starting task 'alchemy' with args: all final
+[I] In '/home/zenith/airsdk': ALCHEMY_TARGET_CONFIG_DIR="/home/zenith/airsdk/products/hello/classic/config" ALCHEMY_TARGET_OUT="/home/zenith/airsdk/out/hello-classic" ALCHEMY_TARGET_PRODUCT="hello" ALCHEMY_TARGET_PRODUCT_VARIANT="classic" ALCHEMY_TARGET_SCAN_ADD_DIRS=" /home/zenith/airsdk/packages" ALCHEMY_TARGET_SCAN_PRUNE_DIRS=" /home/zenith/airsdk" ALCHEMY_USE_COLORS="1" ALCHEMY_WORKSPACE_DIR="/home/zenith/airsdk" PARROT_BUILD_PROP_GROUP="drones" PARROT_BUILD_PROP_PRODUCT="hello" PARROT_BUILD_PROP_PROJECT="airsdk-missions" PARROT_BUILD_PROP_UID="hello-classic-20221125-1126-0.0.0" PARROT_BUILD_PROP_VARIANT="classic" PARROT_BUILD_PROP_VERSION="0.0.0" /home/zenith/airsdk/build/alchemy/scripts/alchemake -j 8 all final
+Copying /home/zenith/airsdk/sdk/classic/host/ to /home/zenith/airsdk/out/hello-classic/staging-host
+----------------------------------------------------------------------
++ ALCHEMY_WORKSPACE_DIR = /home/zenith/airsdk
++ TARGET_PRODUCT = hello
++ TARGET_PRODUCT_VARIANT = classic
++ TARGET_OS = linux
++ TARGET_OS_FLAVOUR = parrot
++ TARGET_LIBC = eglibc
++ TARGET_ARCH = aarch64
++ TARGET_CPU = hi3559
++ TARGET_OUT = /home/zenith/airsdk/out/hello-classic
++ TARGET_CONFIG_DIR = /home/zenith/airsdk/products/hello/classic/config
++ TARGET_CC_PATH = /opt/hisi-linux/x86-arm/aarch64-himix100-linux/bin/aarch64-himix100-linux-gcc
++ TARGET_CC_VERSION = 6.3.0
+----------------------------------------------------------------------
+Scanning /home/zenith/airsdk/packages for makefiles...
+Found 4 makefiles
+Found 65 modules
+Computing modules dependencies...
+Checking modules dependencies...
+/home/zenith/airsdk/build/alchemy/main.mk:367: /home/zenith/airsdk/sdk/classic: module 'libflightplan-pb-helper' exports missing include '/home/zenith/airsdk/sdk/classic/usr/include/libflightplan-pb-helper/gen'
+Generating rules...
+Processing rules...
+Done building all
+Generating final tree...
+Done generating final tree
+[I] Finished task 'alchemy'
+[I] Finished task 'build'
+[I] Starting task 'images'
+[I] In '/home/zenith/airsdk': GIT_PAGER="cat" repo manifest --revision-as-HEAD --suppress-upstream-revision -o /home/zenith/airsdk/out/hello-classic/final/etc/manifest.xml
+
+... A new version of repo (2.29) is available.
+... You should upgrade soon:
+    cp /home/zenith/airsdk/.repo/repo/repo /home/zenith/bin/repo
+
+Saved manifest to /home/zenith/airsdk/out/hello-classic/final/etc/manifest.xml
+[I] In '/home/zenith/airsdk': rm -f /home/zenith/airsdk/out/hello-classic/manifest.xml
+[I] In '/home/zenith/airsdk': ln -fs final/etc/manifest.xml /home/zenith/airsdk/out/hello-classic/manifest.xml
+[I] In '/home/zenith/airsdk': rm -f /home/zenith/airsdk/out/hello-classic/build.prop
+[I] In '/home/zenith/airsdk': ln -fs final/etc/build.prop /home/zenith/airsdk/out/hello-classic/build.prop
+[I] Starting task 'alchemy' with args: image
+[I] In '/home/zenith/airsdk': ALCHEMY_TARGET_CONFIG_DIR="/home/zenith/airsdk/products/hello/classic/config" ALCHEMY_TARGET_OUT="/home/zenith/airsdk/out/hello-classic" ALCHEMY_TARGET_PRODUCT="hello" ALCHEMY_TARGET_PRODUCT_VARIANT="classic" ALCHEMY_TARGET_SCAN_ADD_DIRS=" /home/zenith/airsdk/packages" ALCHEMY_TARGET_SCAN_PRUNE_DIRS=" /home/zenith/airsdk" ALCHEMY_USE_COLORS="1" ALCHEMY_WORKSPACE_DIR="/home/zenith/airsdk" PARROT_BUILD_PROP_GROUP="drones" PARROT_BUILD_PROP_PRODUCT="hello" PARROT_BUILD_PROP_PROJECT="airsdk-missions" PARROT_BUILD_PROP_UID="hello-classic-20221125-1126-0.0.0" PARROT_BUILD_PROP_VARIANT="classic" PARROT_BUILD_PROP_VERSION="0.0.0" /home/zenith/airsdk/build/alchemy/scripts/alchemake -j 8 image
+Copying /home/zenith/airsdk/sdk/classic/host/ to /home/zenith/airsdk/out/hello-classic/staging-host
+----------------------------------------------------------------------
++ ALCHEMY_WORKSPACE_DIR = /home/zenith/airsdk
++ TARGET_PRODUCT = hello
++ TARGET_PRODUCT_VARIANT = classic
++ TARGET_OS = linux
++ TARGET_OS_FLAVOUR = parrot
++ TARGET_LIBC = eglibc
++ TARGET_ARCH = aarch64
++ TARGET_CPU = hi3559
++ TARGET_OUT = /home/zenith/airsdk/out/hello-classic
++ TARGET_CONFIG_DIR = /home/zenith/airsdk/products/hello/classic/config
++ TARGET_CC_PATH = /opt/hisi-linux/x86-arm/aarch64-himix100-linux/bin/aarch64-himix100-linux-gcc
++ TARGET_CC_VERSION = 6.3.0
+----------------------------------------------------------------------
+Scanning /home/zenith/airsdk/packages for makefiles...
+Found 4 makefiles
+Found 65 modules
+Computing modules dependencies...
+Checking modules dependencies...
+/home/zenith/airsdk/build/alchemy/main.mk:367: /home/zenith/airsdk/sdk/classic: module 'libflightplan-pb-helper' exports missing include '/home/zenith/airsdk/sdk/classic/usr/include/libflightplan-pb-helper/gen'
+Generating rules...
+Processing rules...
+Image tar: start
+Image tar: compressing
+Image tar: done -> /home/zenith/airsdk/out/hello-classic/hello-classic.tar.gz
+[I] Finished task 'alchemy'
+[I] Generating mission final for 'com.parrot.missions.samples.hello'
+[I] In '/home/zenith/airsdk': cp -av /home/zenith/airsdk/out/hello-classic/final/etc/* /home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/etc
+'/home/zenith/airsdk/out/hello-classic/final/etc/build.prop' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/etc/build.prop'
+'/home/zenith/airsdk/out/hello-classic/final/etc/final.stamp' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/etc/final.stamp'
+'/home/zenith/airsdk/out/hello-classic/final/etc/manifest.xml' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/etc/manifest.xml'
+[I] In '/home/zenith/airsdk': cp -av /home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/* /home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/parrot' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/parrot'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/parrot/missions' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/parrot/missions'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/parrot/missions/samples' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/parrot/missions/samples'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/parrot/missions/samples/hello' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/parrot/missions/samples/hello'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/parrot/missions/samples/hello/airsdk' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/parrot/missions/samples/hello/airsdk'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/parrot/missions/samples/hello/airsdk/messages_pb2.py' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/parrot/missions/samples/hello/airsdk/messages_pb2.py'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/samples' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/samples'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/samples/hello' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/samples/hello'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/samples/hello/cv_service' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/samples/hello/cv_service'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/samples/hello/cv_service/messages_pb2.py' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/samples/hello/cv_service/messages_pb2.py'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/samples/hello/guidance' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/samples/hello/guidance'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python/site-packages/samples/hello/guidance/messages_pb2.py' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/python/samples/hello/guidance/messages_pb2.py'
+[I] In '/home/zenith/airsdk': cp -av /home/zenith/airsdk/out/hello-classic/final/usr/lib/* /home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/libairsdk-hello-cv-service-msghub.so' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/libairsdk-hello-cv-service-msghub.so'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/libairsdk-hello-cv-service-pb.so' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/libairsdk-hello-cv-service-pb.so'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/.MODULE_LICENSE_BSD' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/.MODULE_LICENSE_BSD'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/samples' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/samples/hello' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples/hello'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/samples/hello/cv_service' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples/hello/cv_service'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/samples/hello/cv_service/messages_pb2.py' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples/hello/cv_service/messages_pb2.py'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/samples/hello/guidance' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples/hello/guidance'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/samples/hello/guidance/messages_pb2.py' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples/hello/guidance/messages_pb2.py'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/parrot' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/parrot/missions' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot/missions'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/parrot/missions/samples' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot/missions/samples'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/parrot/missions/samples/hello' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot/missions/samples/hello'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/parrot/missions/samples/hello/airsdk' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot/missions/samples/hello/airsdk'
+'/home/zenith/airsdk/out/hello-classic/final/usr/lib/python3.7/site-packages/parrot/missions/samples/hello/airsdk/messages_pb2.py' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot/missions/samples/hello/airsdk/messages_pb2.py'
+[I] In '/home/zenith/airsdk': cp -av /home/zenith/airsdk/out/hello-classic/final/usr/share/* /home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/samples' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/samples'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/samples/hello' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/samples/hello'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/samples/hello/cv-service' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/samples/hello/cv-service'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/samples/hello/cv-service/messages.proto' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/samples/hello/cv-service/messages.proto'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/samples/hello/guidance' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/samples/hello/guidance'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/samples/hello/guidance/messages.proto' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/samples/hello/guidance/messages.proto'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/parrot' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/parrot'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/parrot/missions' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/parrot/missions'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/parrot/missions/samples' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/parrot/missions/samples'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/parrot/missions/samples/hello' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/parrot/missions/samples/hello'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/parrot/missions/samples/hello/airsdk' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/parrot/missions/samples/hello/airsdk'
+'/home/zenith/airsdk/out/hello-classic/final/usr/share/protobuf/parrot/missions/samples/hello/airsdk/messages.proto' -> '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/share/protobuf/parrot/missions/samples/hello/airsdk/messages.proto'
+[I] In '/home/zenith/airsdk': rm -rfv /home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python
+removed '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python'
+[I] In '/home/zenith/airsdk': rm -rfv /home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.[0-9]
+removed '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples/hello/cv_service/messages_pb2.py'
+removed directory '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples/hello/cv_service'
+removed '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples/hello/guidance/messages_pb2.py'
+removed directory '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples/hello/guidance'
+removed directory '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples/hello'
+removed directory '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/samples'
+removed '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/.MODULE_LICENSE_BSD'
+removed '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot/missions/samples/hello/airsdk/messages_pb2.py'
+removed directory '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot/missions/samples/hello/airsdk'
+removed directory '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot/missions/samples/hello'
+removed directory '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot/missions/samples'
+removed directory '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot/missions'
+removed directory '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages/parrot'
+removed directory '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7/site-packages'
+removed directory '/home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload/lib/python3.7'
+[I] Generating mission archive for 'com.parrot.missions.samples.hello'
+[I] In '/home/zenith/airsdk': tar -C /home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/payload -czvf /tmp/missions-vo6447os/payload.tar.gz .
+./
+./etc/
+./etc/manifest.xml
+./etc/build.prop
+./etc/final.stamp
+./lib/
+./lib/libairsdk-hello-cv-service-msghub.so
+./lib/libairsdk-hello-cv-service-pb.so
+./python/
+./python/samples/
+./python/samples/hello/
+./python/samples/hello/cv_service/
+./python/samples/hello/cv_service/messages_pb2.py
+./python/samples/hello/guidance/
+./python/samples/hello/guidance/messages_pb2.py
+./python/parrot/
+./python/parrot/missions/
+./python/parrot/missions/samples/
+./python/parrot/missions/samples/hello/
+./python/parrot/missions/samples/hello/airsdk/
+./python/parrot/missions/samples/hello/airsdk/messages_pb2.py
+./services/
+./services/airsdk-hello-cv-service
+./fsup/
+./fsup/ground/
+./fsup/ground/stage.py
+./fsup/ground/__init__.py
+./fsup/mission.py
+./fsup/__init__.py
+./fsup/flying/
+./fsup/flying/stage.py
+./fsup/flying/__init__.py
+./fsup/uid.py
+./share/
+./share/protobuf/
+./share/protobuf/samples/
+./share/protobuf/samples/hello/
+./share/protobuf/samples/hello/cv-service/
+./share/protobuf/samples/hello/cv-service/messages.proto
+./share/protobuf/samples/hello/guidance/
+./share/protobuf/samples/hello/guidance/messages.proto
+./share/protobuf/parrot/
+./share/protobuf/parrot/missions/
+./share/protobuf/parrot/missions/samples/
+./share/protobuf/parrot/missions/samples/hello/
+./share/protobuf/parrot/missions/samples/hello/airsdk/
+./share/protobuf/parrot/missions/samples/hello/airsdk/messages.proto
+./guidance/
+./guidance/hello.py
+[I] In '/home/zenith/airsdk': cp -pf /home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/mission.json /tmp/missions-vo6447os/mission.json
+[I] In '/home/zenith/airsdk': cp -pf /home/zenith/airsdk/out/hello-classic/final/missions/com.parrot.missions.samples.hello/mission.json /home/zenith/airsdk/out/hello-classic/com_parrot_missions_samples_hello.json
+[I] In '/home/zenith/airsdk': tar -C /tmp/missions-vo6447os -cvf /tmp/missions-vo6447os/com.parrot.missions.samples.hello.tar mission.json payload.tar.gz
+mission.json
+payload.tar.gz
+[W] No signature key configured
+[I] In '/home/zenith/airsdk': gzip /tmp/missions-vo6447os/com.parrot.missions.samples.hello.tar
+[I] In '/home/zenith/airsdk': cp -pf /tmp/missions-vo6447os/com.parrot.missions.samples.hello.tar.gz /home/zenith/airsdk/out/hello-classic/images/
+[I] Finished task 'images'
+[I] Finished task 'all'
+zenith@Zenith-AI:~/airsdk$ ./build.sh -p mymission-classic -t sync --reboot
+[E] 'mymission' is not a valid product
+zenith@Zenith-AI:~/airsdk$ ./build.sh -p hello-classic -t sync --reboot
+[I] Starting task 'sync' with args: --reboot
+[I] In '/home/zenith/airsdk': curl -i -X PUT 'http://anafi-ai.local/api/v1/mission/missions/?allow_downgrade=yes' --data-binary @/home/zenith/airsdk/out/hello-classic/images/com.parrot.missions.samples.hello.tar.gz
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 286
+Connection: close
+Cache-Control: no-cache
+Access-Control-Allow-Origin: *
+
+{"uid":"com.parrot.missions.samples.hello","name":"Hello mission","desc":"This is a simple 'Hello' mission","version":"0.0.0","target_model_id":2330,"target_min_version":"0.0.0","target_max_version":"99.99.99","build_sdk_version":"7.4.0","build_sdk_target_arch":"aarch64","status":"OK"}[I] In '/home/zenith/airsdk': curl -i -X PUT 'http://anafi-ai.local/api/v1/system/reboot'
+HTTP/1.1 200 OK
+Connection: close
+Cache-Control: no-cache
+Access-Control-Allow-Origin: *
+
+[I] Finished task 'sync'
+zenith@Zenith-AI:~/airsdk$ cd
+zenith@Zenith-AI:~$ ping accounts.parrot.com 
+PING parrot-download-1240771135.eu-central-1.elb.amazonaws.com (3.68.130.235) 56(84) bytes of data.
